@@ -18,13 +18,7 @@ public class Main {
         int option = scanner.nextInt();
         while (option != 0) {
 
-            System.out.println("insert option number");
-            System.out.println("1. formatList");
-            System.out.println("2. createListByCategory");
-            System.out.println("3. ShowCategoryList");
-            System.out.println("4. deleteCategory");
-            System.out.println("5. makeFolder");
-            option = scanner.nextInt();
+
 
             switch (option) {
                 case 1:
@@ -49,6 +43,13 @@ public class Main {
                 default:
                     System.out.println("invalid option");
             }
+            System.out.println("insert option number");
+            System.out.println("1. formatList");
+            System.out.println("2. createListByCategory");
+            System.out.println("3. ShowCategoryList");
+            System.out.println("4. deleteCategory");
+            System.out.println("5. makeFolder");
+            option = scanner.nextInt();
         }
     }
 }

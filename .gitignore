@@ -1,6 +1,8 @@
 
-.idea/
-
 src/resources/movieList.m3u
 
 src/resources/movies.m3u
+
+.idea/
+
+out/

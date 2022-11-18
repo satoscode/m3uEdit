@@ -42,7 +42,7 @@ public class Tools {
             //write in file
             Files.write(Paths.get(FILE_PATH), content.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
 
-            //print
+            //print counter off while loop
             System.out.println("added: " + title);
         }
     }
@@ -52,21 +52,19 @@ public class Tools {
         String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
         Pattern pattern = Pattern.compile(MATCH_FORMATTED_CONTENT);
         Matcher matcher = pattern.matcher(content);
-
         //get a list of group-title
+        //there must be no repeated elements
         while (matcher.find()) {
-
             //contains group-title="x"
             String groupTitle = matcher.group(1);
 
+            //delete the rest of the lines that do not belong to the group-title="x"
             if (!groupTitle.equals(category)) {
-
+                //delete line and next line and next line
                 content = content.replaceFirst("#EXTINF:0 group-title="+"\""+groupTitle+"\",HD : (.*)\\r?\\n#EXTGRP:"+groupTitle+"\\r?\\n(.*)\\r?\\n", "");
-
                 //write in file
                 Files.write(Paths.get(FILE_PATH_OUTPUT), content.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
-
-                //print
+                //print counter off while loop
                 System.out.println("deleted: " + groupTitle);
             }
         }
@@ -77,8 +75,8 @@ public class Tools {
         String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
         Pattern pattern = Pattern.compile(MATCH_FORMATTED_CONTENT);
         Matcher matcher = pattern.matcher(content);
-
         //get a list of group-title
+        //there must be no repeated elements
         String listGroup = "";
         while (matcher.find()) {
             String groupTitle = matcher.group(1);
@@ -86,7 +84,6 @@ public class Tools {
                 listGroup = listGroup + groupTitle + System.lineSeparator();
             }
         }
-
         //order listGroup
         String[] listGroupArray = listGroup.split(System.lineSeparator());
         for (int i = 0; i < listGroupArray.length; i++) {
@@ -98,7 +95,7 @@ public class Tools {
                 }
             }
         }
-
+        //System.out.printf("listGroup: %s", listGroup);
         //print ordered listGroup
         for (int i = 0; i < listGroupArray.length; i++) {
             System.out.println(listGroupArray[i]);
@@ -106,22 +103,20 @@ public class Tools {
     }
 
     public static void deleteCategory (String contentDelete) throws IOException {
-
         //read file
         String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
         Pattern pattern = Pattern.compile(MATCH_FORMATTED_CONTENT);
         Matcher matcher = pattern.matcher(content);
-
+        //then delete line and next line and next line in all file
         while (matcher.find()) {
-
+            //contains English
             String groupTitle = matcher.group(1);
-
             if (groupTitle.equals(contentDelete)) {
-                //delete lines
+                //delete line and next line and next line
                 content = content.replaceFirst("#EXTINF:0 group-title="+"\""+contentDelete+"\",HD : (.*)\\r?\\n#EXTGRP:"+contentDelete+"\\r?\\n(.*)\\r?\\n", "");
                 //write in file
                 Files.write(Paths.get(FILE_PATH), content.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
-                //print
+                //print counter off while loop
                 System.out.println("deleted: " + groupTitle);
             }
         }
