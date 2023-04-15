@@ -100,6 +100,8 @@ public class Tools {
         for (int i = 0; i < listGroupArray.length; i++) {
             System.out.println(listGroupArray[i]);
         }
+        //print many listGroup
+        System.out.printf("many: %d\n", listGroupArray.length);
     }
 
     public static void deleteCategory (String contentDelete) throws IOException {
@@ -153,7 +155,7 @@ public class Tools {
         //create folders
         for (int i = 0; i < listGroupArray.length; i++) {
             //make a folder for each category
-            File file = new File("src/Resourses/" + listGroupArray[i]);
+            File file = new File("src/resources/" + listGroupArray[i]);
             if (!file.exists()) {
                 if (file.mkdir()) {
                     System.out.println("Directory is created!");
@@ -177,7 +179,7 @@ public class Tools {
             String pathMovie = matcher2.group(4);
 
             //make a file.strm in each directory
-            File file = new File("src/Resourses/" + groupTitle + "/" + nameMovie2 + ".strm");
+            File file = new File("src/resources/" + groupTitle + "/" + nameMovie2 + ".strm");
 
             //print log create file
             System.out.println(nameMovie2);
@@ -191,6 +193,84 @@ public class Tools {
 
             //write in files.strm the path to the movie
             Files.write(Paths.get("src/resources/" + groupTitle + "/" + nameMovie2 + ".strm"), pathMovie.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+        }
+    }
+
+    public static void ShowTvCategoryList () throws IOException {
+        //read file
+        String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+        Pattern pattern = Pattern.compile("#EXTINF:-1 tvg-id=\"\" tvg-name=\"(.*?)\" tvg-logo=\"(.*?)\" group-title=\"(.*?)\",(.*)" + System.lineSeparator() + "(.*)");
+        Matcher matcher = pattern.matcher(content);
+        //get a list of group-title
+        //there must be no repeated elements
+        String listGroup = "";
+        while (matcher.find()) {
+            String groupTitle = matcher.group(3);
+            if (!listGroup.contains(groupTitle)) {
+                listGroup = listGroup + groupTitle + System.lineSeparator();
+            }
+        }
+        //order listGroup
+        String[] listGroupArray = listGroup.split(System.lineSeparator());
+        for (int i = 0; i < listGroupArray.length; i++) {
+            for (int j = i + 1; j < listGroupArray.length; j++) {
+                if (listGroupArray[i].compareTo(listGroupArray[j]) > 0) {
+                    String temp = listGroupArray[i];
+                    listGroupArray[i] = listGroupArray[j];
+                    listGroupArray[j] = temp;
+                }
+            }
+        }
+        //System.out.printf("listGroup: %s", listGroup);
+        //print ordered listGroup
+        for (int i = 0; i < listGroupArray.length; i++) {
+            System.out.println(listGroupArray[i]);
+        }
+        //print many listGroup
+        System.out.printf("many: %d\n", listGroupArray.length);
+    }
+
+    public static void deleteCategoryTV (String contentDelete) throws IOException {
+        //read file
+        String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+        Pattern pattern = Pattern.compile("#EXTINF:-1 tvg-id=\"\" tvg-name=\"(.*?)\" tvg-logo=\"(.*?)\" group-title=\"(.*?)\",(.*)" + System.lineSeparator() + "(.*)");
+        Matcher matcher = pattern.matcher(content);
+        //then delete line and next line and next line in all file
+        while (matcher.find()) {
+            //contains English
+            String groupTitle = matcher.group(3);
+            if (groupTitle.equals(contentDelete)) {
+                //delete line and next line and next line
+                content = content.replaceFirst("#EXTINF:-1 tvg-id=\"\" tvg-name=\"(.*)\" tvg-logo=\"(.*)\" group-title=\""+contentDelete+"\",(.*)" + System.lineSeparator() + "(.*)", "");
+                //write in file
+                Files.write(Paths.get(FILE_PATH), content.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                //print counter off while loop
+                System.out.println("deleted: " + groupTitle);
+            }
+        }
+    }
+    //createListByCategory for ("#EXTINF:-1 tvg-id=\"\" tvg-name=\"(.*?)\" tvg-logo=\"(.*?)\" group-title=\"(.*?)\",(.*)" + System.lineSeparator() + "(.*)");
+    public static void createListByCategory2 (String contentCreate) throws IOException {
+        //read file
+        String content = new String(Files.readAllBytes(Paths.get(FILE_PATH)));
+        Pattern pattern = Pattern.compile("#EXTINF:-1 tvg-id=\"\" tvg-name=\"(.*?)\" tvg-logo=\"(.*?)\" group-title=\"(.*?)\",(.*)" + System.lineSeparator() + "(.*)");
+        Matcher matcher = pattern.matcher(content);
+        //create a list of group-title
+        String listGroup = "";
+        while (matcher.find()) {
+            //contains group-title="x"
+            String groupTitle = matcher.group(3);
+
+            //copy group-title=matcher.group(3) to file FILE_PATH_OUTPUT
+            if (groupTitle.equals(contentCreate)) {
+                //copy group-title=matcher.group(3) to file FILE_PATH_OUTPUT
+                listGroup = listGroup + "#EXTINF:-1 tvg-id=\"\" tvg-name=\"" + matcher.group(1) + "\" tvg-logo=\"" + matcher.group(2) + "\" group-title=\"" + matcher.group(3) + "\"," + matcher.group(4) + System.lineSeparator() + matcher.group(5) + System.lineSeparator();
+                //write in file
+                Files.write(Paths.get(FILE_PATH_OUTPUT), listGroup.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                //print counter off while loop
+                System.out.println("deleted: " + groupTitle);
+            }
+
         }
     }
 }

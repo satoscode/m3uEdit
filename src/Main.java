@@ -10,6 +10,9 @@ public class Main {
         System.out.println("3. ShowCategoryList");
         System.out.println("4. deleteCategory");
         System.out.println("5. makeFolder");
+        System.out.println("6. ShowTvCategoryList");
+        System.out.println("7. deleteCategoryTV");
+        System.out.println("8. createListByCategory2");
         //use new scanner
         Scanner scanner = new Scanner(System.in);
         Scanner scanner2 = new Scanner(System.in);
@@ -40,6 +43,19 @@ public class Main {
                 case 5:
                     Tools.makeFolders();
                     break;
+                case 6:
+                    Tools.ShowTvCategoryList();
+                    break;
+                case 7:
+                    System.out.println("insert category name");
+                    String categoryDeleteTV = scanner2.nextLine();
+                    Tools.deleteCategoryTV(categoryDeleteTV);
+                    break;
+                case 8:
+                    System.out.println("insert category name");
+                    String category2 = scanner2.nextLine();
+                    Tools.createListByCategory2(category2);
+                    break;
                 default:
                     System.out.println("invalid option");
             }
@@ -49,6 +65,9 @@ public class Main {
             System.out.println("3. ShowCategoryList");
             System.out.println("4. deleteCategory");
             System.out.println("5. makeFolder");
+            System.out.println("6. ShowTvCategoryList");
+            System.out.println("7. deleteCategoryTV");
+            System.out.println("8. createListByCategory2");
             option = scanner.nextInt();
         }
     }
