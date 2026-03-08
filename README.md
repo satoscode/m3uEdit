@@ -1,6 +1,5 @@
-Java CLI to edit IPTV M3U playlists and generate organized TV/Movies libraries.
-
 # m3uEdit
+Java CLI to edit IPTV M3U playlists and generate organized TV/Movies libraries.
 
 ## Overview
 
